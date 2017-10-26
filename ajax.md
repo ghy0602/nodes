@@ -164,7 +164,7 @@
 
 ​      对象转字符串：
 
-    
+
     //    name=hh&age=18&sex=人妖  
        var o = {
            name:'hh',
@@ -251,4 +251,221 @@
             }
         }
     }
-}
+    }
+### 12.模板字符串
+
+模板字符串:
+
+            ``
+             ``里面放的是字符串
+              如果有变量，那么使用 ${}
+               '我叫'+str === `我叫${str}`
+               ${}除了可以放变量还可以运算  ${num*10} -> 10
+        		使用了字符串模板之后可以随意换行            
+### 13.上传 
+
+    浏览器的js，不能操作本地文件（增删改..）
+    	上传:
+            传统的上传
+    
+    最大优点就是我们可以异步上传一个二进制文件.
+        var f = new FormData();
+        f.append(key,val);
+        ajax.send(f); 
+        file控件中的数据是在<input type="file" id="f"> 的files[0]
+    
+        ajax.upload.onprogress
+            进行监听数据上传进度的，只要后端收到一次数据就会调用这个函数，每次数据的细节信息都放在事件对象上
+    
+            ev.loaded    当前传输的进度
+            ev.total     总大小
+    btn.onclick = function(){	
+    	console.dir(f)
+           console.dir(f.files[0]);
+        var ajax = new XMLHttpRequest;
+    
+        ajax.open('post','post_file.php');
+    
+        var formData = new FormData();
+        
+        formData.append('file',f.files[0]);   
+        //         console.log(formData);
+        ajax.send(formData);
+        //ajax.send('file='+f.files[0]);
+        ajax.onload = function(){
+            console.log(ajax.responseText);
+        }
+    
+    }    
+
+
+      btn.onclick = function(){   
+        var ajax = new XMLHttpRequest;
+        ajax.open('post','post_file.php');
+        var formData = new FormData();
+        formData.append('file',f.files[0]);
+        ajax.upload.onprogress = function(ev){ 
+            let scale = Math.floor((ev.loaded / ev.total)*100);
+            loading.style.cssText = `transition:.5s;width:${scale}%;opacity:${(100-scale)/100}`;
+            if(scale == 100){
+                loading.style.transition = 0;
+                setTimeout(function() {
+                    loading.style.width = '0';
+                    setTimeout(function(){
+                        loading.style.opacity = '1';
+                        box.style.opacity = 0;
+                        document.body.style.transition = '.5s';
+                        document.body.style.background = 'yellow';
+                    });
+                }, 1000);
+            }
+    
+        }
+        // console.dir(ajax);
+    
+        ajax.send(formData);
+    
+    }     
+### 13.跨域
+
+安全
+
+        同源：
+            同源策略：
+                一种约定，它是浏览器最核心也最基本的安全功能，如果缺少了同源策略，则浏览器的正常功能可能都会受到影响。可以说Web是构建在同源策略基础之上的，浏览器只是针对同源策略的一种实现
+    
+            源：协议、端口、域名
+            同源：同协议、端口、域名
+    
+            协议：
+                http、https、file、ftp...
+                http://localhost/2017-10-25/5_%E4%B8%8A%E4%BC%A02.html
+                file:///C:/xampp/php/www/2017-10-25/6_%E8%B7%A8%E5%9F%9F.html
+    
+            端口:
+                专门提供某项服务的"窗口"
+                
+            域名:IP的别名（方便记）
+                www.baidu.com
+                www.miaov.com
+    
+            跨域（跨源）
+                不同协议、端口、域名
+          解决跨域：
+                通过 新版本的XMLHttpRequest  + 服务器开权限
+                    'Access-Control-Allow-Origin:*'
+                 服务器代理：
+                    服务器文件能访问别的域下的资源，如果服务器文件与自己的页面
+                    是同源，我就能访问别的域下的资源了。
+    
+                iframe 
+    
+                jsonp
+    
+    document.onclick = function(){    
+        var ajax = new XMLHttpRequest;
+        // ajax.open('get','http://192.168.2.131/ajax/php/1.php')
+        ajax.open('get','php/3.get.php');
+        ajax.send();
+        ajax.onload = function(){
+            // document.write(ajax.responseText)
+            console.log(ajax.responseText);
+        }
+    }                    
+### 14.jsonp
+
+    jsonp = JSON + Padding    
+        函数名 + 括号  括号中带有数据
+        fn([])
+        fn({})
+    
+        ajax的数据是没有函数名的
+    
+        img src="xxx"
+        link href = "xx"
+        script src=""
+    
+        jsonp原理
+    
+            首先，jsonp数据格式是函数名+括号的
+    
+            然后，*全局*需要定义一个与后端函数名一致的函数
+    
+            最后，当需要数据的时候，创建一个script标签，进行请求，获取数据(按需加载)。
+    
+        需要数据的时候执行一个函数，函数内有想要的数据，提前约定好这个函数名，后端会把数据传到函数中，实现按需加载。
+        
+            **** 创建的为异步的。
+    div1.onclick = function(){    
+        let os = document.createElement('script');
+        os.src = 'file:///C:/xampp/php/www/2017-10-25/php/qq.js';
+        document.getElementsByTagName('head')[0].appendChild(os);
+        os.remove();
+    }
+    div2.onclick = function(){
+        let os = document.createElement('script');
+        os.src = 'file:///C:/xampp/php/www/2017-10-25/php/qq.js?callback=fn2';
+        document.getElementsByTagName('head')[0].appendChild(os);
+        os.remove();
+        // fn([1,2,3,4,5]);
+    }
+### 15.瀑布流
+
+    const lis = Array.from(document.getElementsByTagName('li'));
+    let num = 0;
+    let onOff = true;
+    
+    pbl(num);
+    function pbl(num){
+      loading.style.display = 'block';
+      onOff = false;
+      jsonp({
+        url:'http://www.wookmark.com/api/json/popular',
+        data:{
+          page:num
+        },
+        callback:'callback',
+        success:function(data){
+            console.log(data);
+            if(!data.length)return;
+            data.forEach((e,i)=>{
+                let div = document.createElement('div');
+                div.className = 'pic';
+                let img = new Image();
+                img.src = e.preview; 
+                //只有能打开的图片才插入
+                img.onload = function(){
+                    //找到最短的，插入
+                    let minLi = MinIndex();
+                    div.append(img);
+                    minLi.append(div);
+                }
+            });
+            onOff = true;
+            loading.style.display = 'none';
+        }
+      });
+    }
+    
+    //滚轮
+    
+    document.onscroll = function(){
+      let minLi = MinIndex();
+      if(minLi.getBoundingClientRect().bottom <= window.innerHeight){
+        if(onOff){
+          num ++;
+          pbl(num);
+        }
+      }
+    }
+    
+    //找出li中谁的高度最小
+    function MinIndex(){
+        let arr = [];
+        lis.forEach((e)=>{
+            arr.push(e.scrollHeight);
+        });
+        let min = Math.min.apply('',arr);
+        return lis[arr.findIndex(e=>e==min)];
+    }
+    //    console.log( MinIndex() );
