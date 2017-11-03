@@ -1,0 +1,96 @@
+## webpack
+
+### 1.流程
+
+1. npm init -y //初始化 package.json
+2. 安装依赖
+    npm i -D <package包名> // 声明为开发依赖
+    npm i -S <package> //声明为生产依赖
+3. 新建 webpack.config.js 文件
+4. 配置入口和出口, 接着运行
+5. 根据报错提示, 添加 loader 配置,
+6. 配置好 babel-loader 和 .babelrc
+7. import {c as name} from './component/myName';
+8. 在 package.json 里面配置好命令 : dev : "webpack" , 使用 npm run dev 运行
+
+### 2.bable与webpack
+
+关于 .babelrc 这个配置文件
+
+    干什么的
+        babel API 的配置选项, 就是告诉 babel, 怎么运行
+    什么时候会被使用
+        使用 babel 编译文件的时候, 就会去查看. babelrc, 根据. babelrc 的配置来做相应的操作
+    如何配置 预设和插件
+        presets: [],
+        plugins: []
+
+关于 babel
+    干什么的
+        把代码编译成 ES5代码的工具
+    如何在 cli 使用
+        就是在命令行中使用 babel 命令
+    如何在 webpack 使用
+        使用 babel-loader
+    基于什么运行的 (插件)
+        插件
+    预设是什么 (插件的集合)
+        插件的机会
+关于 webpack 的
+    干什么的
+        模块打包,
+        使用 loader 预处理模块
+    入口是什么意思, 如何配置
+        项目的入口模块
+    输出是什么意思, 如何配置(文件名, 输出路径)
+        webpack 的打包结果
+    什么是 loader,
+        webpack 使用 loader处理模块内容
+    在什么情况下会让 loader 起作用
+        当某一个 rule 被匹配到之后
+    如何在 webpack 使用 babel-loader
+        看配置
+
+关于 npm 的
+    干什么用的
+        管理项目的依赖
+    关于package.json的文件
+        如何生成
+            npm init 一直回车
+        什么情况下会被使用
+            npm i 安装项目依赖的时候
+            想查看项目的时候
+    
+            查看里面声明了什么命令
+            查看项目依赖的时候
+        *如何在里面声明命令
+            在里面声明命令的好处
+            很方便描述出和本项目相关的一些命令操作
+    如何安装依赖 (声明为生产还是开发)
+        npm i/install -S/--save package 生产依赖
+        npm i -D/--save-dev package 开发依赖
+关于模块化语法
+    es6
+        import 'f.js'
+            让这个模块运行, 但不需要接收它暴露的接口
+        import a from './ds.js'
+            让a 的变量接收ds.js的默认导出
+        import a,{b,c} from './ds.js'
+            让a 的变量接收ds.js的默认导出
+            接收它的标准导出 b, c
+        import a,{b as ccd,c} from './ds.js'
+            让a 的变量接收ds.js的默认导出
+            接收它的标准导出 b, c, 并且把 b 重命名成 ccd
+        export
+    
+        export default
+    
+    commonJS
+        require('./a.js')
+    
+        module.exports
+            模块接收的是 module.exports 的导出
+        exports
+            exports 初始默认指向 module.exports
+            如果这个指向被重新赋值, 就会断掉和module.exports的联系
+            不能直接给 exports 赋值
