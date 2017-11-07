@@ -85,3 +85,34 @@
 ​    html-webpack-plugin 自动创建 html 文件
 
 ​    clean-webpack-plugin 清理某一个文件夹在打包之前
+
+
+
+### 小例子：todo
+
+1.组建受控：
+
+​	某些组件有自己的行为，比如  input，你输入东西的时候，页面状态就会变化这是组建本身的行为
+
+​	如果给 input 一个 value 值, 这样就收到了 react 的控制, 可以通过onChange 来 setState 来改变 input 的value.
+
+非受控组件 => 受控组件
+
+
+2.合成的事件对象
+    event
+        nativeEvent: 访问浏览器 dom 元素的事件对象
+        preventDefault
+        stopPropagation
+        target 拿到真实的 dom 元素
+    
+    和事件相关的文档: https://reactjs.org/docs/events.html
+3.map  方法
+
+​	数组下的一个方法，接受一个回调函数，回调函数里面接收的参数是：（元素，索引，数组），回调函数的返回值会  替换掉原来的元素，返回一个新的数组，原来被遍历的数组没有变化
+
+4.当把数组写在jsx结构里面，react会自动展开
+
+5.在数组里面的jsx  元素应该在外层的结构有一个key，应该保证相应数据的key  是唯一的，同一份结构，永远保证不管视图如何变化，相同的数据对应同一个 key值
+
+6. 组件之间的交流(数据传递), 组件之间公共 props 进行数据传递, 数据从顶层流向底层, 而且永远是这样. *不能修改 props*
