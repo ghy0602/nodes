@@ -90,14 +90,10 @@
 
 ### 小例子：todo
 
-1.组建受控：
-
-​	某些组件有自己的行为，比如  input，你输入东西的时候，页面状态就会变化这是组建本身的行为
-
-​	如果给 input 一个 value 值, 这样就收到了 react 的控制, 可以通过onChange 来 setState 来改变 input 的value.
-
-非受控组件 => 受控组件
-
+1. 组件受控
+    某些组件有自己的行为, 比如 input, 你输入东西的时候, 页面状态就会变化, 这是组件本身的行为
+    如果给 input 一个 value 值, 这样就收到了 react 的控制, 可以通过onChange 来 setState 来改变 input 的value.
+    非受控组件 => 受控组件
 
 2.合成的事件对象
     event
@@ -107,12 +103,50 @@
         target 拿到真实的 dom 元素
     
     和事件相关的文档: https://reactjs.org/docs/events.html
-3.map  方法
 
-​	数组下的一个方法，接受一个回调函数，回调函数里面接收的参数是：（元素，索引，数组），回调函数的返回值会  替换掉原来的元素，返回一个新的数组，原来被遍历的数组没有变化
+3. map 方法
+    数组下的一个方法, 接收一个回调函数, 回调函数里面接收的参数是: (元素,索引,数组)
+    回调函数的返回值会 替换掉原来的元素, 返回一个新数组
+    原来被遍历的数组没有变化
 
-4.当把数组写在jsx结构里面，react会自动展开
+4. 当把数组卸载 jsx 结构里面, react 会自动展开
 
-5.在数组里面的jsx  元素应该在外层的结构有一个key，应该保证相应数据的key  是唯一的，同一份结构，永远保证不管视图如何变化，相同的数据对应同一个 key值
+5. key, 在数组里面的 jsx 元素应该在最外层的结构有一个 key, 应该保证相应数据的 key 是唯一的. 同一份结构, 永远保证不管如何视图变化, 相同的数据对应同一个 key 值
 
 6. 组件之间的交流(数据传递), 组件之间公共 props 进行数据传递, 数据从顶层流向底层, 而且永远是这样. *不能修改 props*
+
+7. 在元素上面声明 ref 属性, 可以通过组件拿到真实的 dom 元素
+    ref="df" => this.refs.df (现在已经不被推荐)
+    ref={ (el)={ this.cont = el } } : this.cont 就可以拿到真实的 DOM 元素
+
+8. (用类声明的)组件的生命周期
+    mounting 阶段: 组件挂载阶段, 出生阶段,只能被出生一次,
+    updating 阶段: 更新阶段, 活着时候的阶段,
+    unmounting 阶段: 卸载, 死亡
+
+9. 生命周期的函数
+    mounting
+        constructor
+        componentWillMount 组件将要被挂载执行
+        render 就是那一刻
+        componentDidMount
+            在这个函数里面发起请求
+        
+        在挂载完成之前, 所有的组件都应该 render
+        所有组件 render 之后, 开始依次过载: 同层级的组件从先往后挂载, 父子组件 先挂载子组件
+        如果要拿到真实的 dom 元素, 必须在组件挂载完成之后
+
+    updatating
+        componentWillReceiveProps() 奇葩, 不会在自身 setState 后执行, 父组件的 render 执行
+        shouldComponentUpdate() 特殊
+        
+        componentWillUpdate() 更新之前
+        render 就是那一刻
+        componentDidUpdate() 更新之后
+        
+        注意事项:
+            更新阶段不要 setState, 除了奇葩那个时候
+    unmounting 卸载阶段
+        componentWillUnmount 卸载之前
+
+10. promise 异步问题, 解决回调函数的噩梦
