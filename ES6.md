@@ -164,5 +164,81 @@ let obj = {name:'hehe',age:18};
         console.log(val,key)
 
     }
-
 ```
+
+### 4.对象扩展
+
+ Object.is():
+
+        判断2个值是否相等
+        NaN === NaN  //false
+        Object.is(NaN, NaN)   //true
+        Object.is({},{})  //flase
+        Object.is(+0,-0); //flase
+从右往左赋值,浅拷贝
+
+    // let obj = Object.assign({name:'ee'},{name:'hh',age:13},{job:'web'});
+
+### 5.symbol
+
+字符串、数字、布尔值、对象、undefined、null、symbol(唯一)
+
+    */
+
+    // let obj = {
+    //     "name":"hehe",
+    //     // "name":
+    // }
+    
+    // let s = Symbol();
+    // console.log(typeof s);
+    
+    //放到Symbol的对象，默认会用toString转一下
+    // const obj = {
+    //     toString() {
+    //         return 'abc';
+    //     }
+    // };
+    // const sym = Symbol(obj);
+    
+    // console.log(sym);// Symbol(abc)
+
+
+    let s1 = Symbol('foo');
+    let s2 = Symbol('foo');
+    
+    // console.log(s1 == s2) // false
+    
+    var obj = {
+        s1,
+        s2
+    }
+    console.log(obj); //key值可以同名
+### 6.set
+
+Set():
+
+            里面的内容不能有重复的
+    */
+    console.log([... new Set(arr)])
+     // console.log([...new Set(arr)]);
+原生js的写法
+
+    // for(var i=0;i<arr.length;i++){
+    //     for(var j=i+1;j<arr.length;j++){
+    //         if(arr[i] == arr[j]){
+    //             arr.splice(j,1);
+    //             j--;
+    //         }
+    //     }
+    // }
+    
+    // let obj = {};
+    // let arr2 = [];
+    // for(var i=0;i<arr.length;i++){
+    //     if(!obj[typeof arr[i] + arr[i]]){
+    //         obj[typeof arr[i] + arr[i]] = 1;
+    //         arr2.push(arr[i]);
+    //     }
+    // }
+    // console.log(arr2);
