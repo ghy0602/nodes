@@ -175,7 +175,7 @@ $("span:nth-of-type(2)").css('background','red');
       let ul2 = ('#ul2');
     
       $ul2.find('p').css('background','red')
-    
+
 
  ### 14.增删改    
 
@@ -206,3 +206,239 @@ $("span:nth-of-type(2)").css('background','red');
     $('ul').on('click','li',function(){
         $(this).remove();
     });
+
+### 15.sizzle
+
+sizzle是选择器，JQ中集成了它
+
+console.log(Sizzle('#box'));//Array(1){0:div#box,1:length:1}
+
+### 16.JQ架构
+
+    无new化操作    
+        因为打算在使用jQuery的时候不在外面new，我们使用了
+        在jQuery函数内部new，但是出现了一个问题，递归！
+    
+        问题：
+            如何才能做到既能够在内部new，又不递归？
+            如何才能做到在内部new还能使用jQuery实例化对象的方法？
+    回答：
+            只要不new jQuery本身就不会递归,
+            那么找一个炮灰来new,只要让炮灰拥有jQuery的
+            属性或者方法，是不是new 炮灰就等同于new jQuery
+
+    (function(global,factory){    
+        "use strict"
+        factory(global);
+    })(typeof window !== 'undefined'?window:this,function(window,noGlobal){
+        function jQuery(selector){
+    
+            return new fn(selector);
+    
+        };
+        jQuery.prototype = {
+    
+            constructor:jQuery,
+    
+            css:function(){
+                console.log(123);
+            }
+    
+        }
+    
+        let fn = jQuery.prototype.paohui = function(selector){
+            
+        }
+    
+        fn.prototype = jQuery.prototype;
+    
+        window.$ = window.jQuery = jQuery;
+    });
+    
+    function jQuery(){
+        alert(1)
+    }
+    
+    // let v = new jQuery('#box');
+    
+    let v = $('#box');
+    
+    // console.log(jQuery);
+    v.css();    
+1. ### 17.函数覆盖       
+
+2.     预解析：        
+               c = function c(){
+               };
+               window.c
+       
+           逐行解读代码:
+               到了第27行，赋值10
+          alert(c);
+       window.c = 10;
+       function c(){
+       
+       };
+       alert(c)//10 ,不会是函数        
+
+### 18.undefined的问题
+
+    在低版本浏览器中undefined是可以为变量的    
+        如果需要使用到undefined，并且undefined之前已经被赋值了
+        那么undefined无效。
+    */
+    var undefined = 10;
+    var a;
+    
+    alert(a == undefined);//低版本false    高版本true
+### 19.jQ获取宽高
+
+        width()
+        height()
+        innerWidth/innerHeight  (包含padding,不包含border)
+        outerWidth/outerHeight(包含padding,包含border)
+    
+        outerWidth可以支持margin 在第二个参数上加true
+    */
+       console.log($('#box').width());
+    
+    // console.log($('#box').innerWidth());
+    
+    // console.log($('#box').innerWidth());
+    
+    console.log($('#box').outerWidth(400,true));
+### 20.jQ距离
+
+    	offset().left / top  : 绝对位置    
+        position().left / top : 相对于定位父级的距离
+        $(document).scrollTop/scrollLeft 滚动的距离
+        document.onclick = function(){
+           console.log( $(document).scrollTop() );
+        };
+        
+        console.log($('#box').offset().top)
+        console.log($(document).scrollTop())
+### 21.按需加载
+
+    let li = ('li'); 
+    $(document).scroll(ljz);
+    ljz();
+    function ljz(){
+        $li.each(function(i,e){
+            if($(e).offset().top <= $(window).innerHeight() + $(document).scrollTop() && $(e).find('img').attr('_src')){
+                $(e).find('img').attr('src', $(e).find('img').attr('_src') );
+                $(e).find('img').removeAttr('_src');
+                $(e).find('img').css({opacity:1});
+            }
+    
+        });
+    } 
+### 22.事件
+
+    jQ中的事件都是事件绑定，所有的事件都是基于on()    
+        click()
+        mouseover()
+        mouseout()
+    当div1绑定的时候，点一次就绑定一次div2的事件
+            点几次div1，就绑定几次div2，所以触发div2的时候会触发若干次。
+            
+            off() 解除绑定,在哪个元素上解除就在那个元素后添加。
+    $('#div1').on('click',function(){   
+       console.log(111111);
+       $('#div2').off().click(function(){
+            alert('我是div2');
+        });
+    
+    });
+    $('#div2').off().click(function(){
+            alert('我是div2222222');
+        });
+    $('#div1').on('click.hehe',data,function(ev){	
+    	console.log(ev)
+        console.log(ev.data);
+    });
+    
+    $('#div1').on('click.点击',function(ev){
+        console.log(11234567);
+    });
+    
+    $('#div2').on('click',function(ev){
+        $('#div1').trigger('click.hehe');
+    });
+    
+       $('#div2').on('click',function(ev){
+           $('#div1').off('click.点击');
+       });    
+​			例子：选型卡
+
+    let btns = ('input');
+    
+      let divs = ('div');
+    
+      $btns.on('click',{data:[11111,2222,3333]},function(ev){
+    
+    $btns.removeClass('active');
+    $(this).addClass('active');
+    $divs.text(ev.data.data[$(this).index('input')]);
+     });
+ 			例子：拖拽
+
+    $('#div1').mousedown(function(ev){    
+        // console.log(ev);
+        let disX = ev.clientX - $(this).offset().left;
+        let disY = ev.clientY - $(this).offset().top;
+    
+        $(document).mousemove(function(ev){
+            $('#div1').css({
+                left : ev.clientX - disX,
+                top : ev.clientY - disY
+            });
+        });
+    
+        $(document).mouseup(function(){
+            $(document).off();
+        });
+        return false;
+    });
+### 23.运动
+
+    slow","normal", or "fast"
+    jQ中的运动都基于 animate()
+    delay() 延迟
+    $('button').click(function(){
+    
+    //    $('#div1').hide('fast');
+    
+    //    $('#div1').toggle(500);  //宽高透明度
+    
+    //     $('#div1').slideDown(500);//?????????????
+    
+    //     $('#div1').slideToggle(800); //改变高度
+    
+    // $('#div1').fadeToggle(800); //透明度
+    $('#div1').animate({
+        width:300,
+    },500).delay(1000).animate({
+        height:600,
+    });
+     });
+### 24.运动问题    
+
+
+    队列概念：   
+       JQ中的运动都是按照队列来排列的
+       1,2, [3,4,5]	
+    	小技巧：
+            如果会多次触发运动，那么在运动前加 stop(true,true) 
+        2个true的时候，立即完成上次一次任务，然后开始本次任务
+       $('button').click(function(){
+    
+         $('#div1').stop(true,true).toggle(500);  //宽高透明度
+    
+      });
+    
+
+
+ 
+
+ 
