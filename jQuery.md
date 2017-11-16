@@ -226,7 +226,7 @@ console.log(Sizzle('#box'));//Array(1){0:div#box,1:length:1}
             只要不new jQuery本身就不会递归,
             那么找一个炮灰来new,只要让炮灰拥有jQuery的
             属性或者方法，是不是new 炮灰就等同于new jQuery
-
+    
     (function(global,factory){    
         "use strict"
         factory(global);
@@ -267,17 +267,17 @@ console.log(Sizzle('#box'));//Array(1){0:div#box,1:length:1}
     v.css();    
 1. ### 17.函数覆盖       
 
-2.     预解析：        
+2.    预解析：        
                c = function c(){
                };
                window.c
-       
+           
            逐行解读代码:
                到了第27行，赋值10
           alert(c);
        window.c = 10;
        function c(){
-       
+
        };
        alert(c)//10 ,不会是函数        
 
@@ -372,11 +372,11 @@ console.log(Sizzle('#box'));//Array(1){0:div#box,1:length:1}
 ​			例子：选型卡
 
     let btns = ('input');
-    
+
       let divs = ('div');
-    
+
       $btns.on('click',{data:[11111,2222,3333]},function(ev){
-    
+
     $btns.removeClass('active');
     $(this).addClass('active');
     $divs.text(ev.data.data[$(this).index('input')]);
@@ -436,9 +436,130 @@ console.log(Sizzle('#box'));//Array(1){0:div#box,1:length:1}
          $('#div1').stop(true,true).toggle(500);  //宽高透明度
     
       });
+
+### 24.小技巧
+
+    如果使用了jQ,那么整个文件尽量都用jQ,jQ没有想要的方法才用原生        
+            get(num) === [num]
+
+ ### 25.滚整屏幕
+
+    //    设置数组，颜色
     
+    let arr = ["pink","red","green","blue","yellow"];
+    
+    let num = 0;
+    
+    let onOff = true;
+    
+    // 获取整屏的宽度与高度
+    
+    let iW = $(window).innerWidth();
+    
+    let iH = $(window).innerHeight();
+    
+    // 给box设置颜色
+    
+    arr.forEach((e,i)=>{
+    
+    $('#box').append(`<div style="width:${iW}px;height:${iH}px;background:${e}"></div>`)
+    });
+    
+    document.onmousewheel = function(ev){
+    if(onOff){
+        onOff = false;
+        if(ev.wheelDelta>0){//向上滚动
+            num --;
+            if(num<0)num = 0;
+            $('#box').animate({
+                top:-num*iH
+            },800,function(){
+                onOff = true;
+            })
+        }else{//向下滚动
+            num ++;
+            if(num>arr.length-1) num = arr.length-1;
+            $('#box').animate({
+                top:-num*iH
+            },800,function(){
+                onOff = true;
+            })
+        }
+        $('ol').find('li').eq(num).addClass('active').siblings('li').removeClass('active');
+    }
+    }
+    
+    $('li').on('click',function(){
+    num = $(this).index('li');
+    $(this).addClass('active').siblings('li').removeClass('active');
+    $('#box').animate({
+        top:-num*iH
+    },800)
+    })
+### 26.工具方法
+
+    $('#box').css();    
+        $.ajax()    $.  工具方法 除了JQ对象可以使用，原生的也能使用
+     $.extend(); -> Object.assgin();
+            从右往左赋值拷贝
+    
+            如果第一个参数为true -> 深度克隆
+### 27.jQ插件
+
+
+
+      .extend() / .fn.extend();
+      除了可以拷贝，还是编写插件的接口
+       $('#xx')
+      $.
+      let str = '   abcdefg   ';
+    
+      $.extend({
+    	trimRight:function(str){
+      return str.replace(/\s+$/,'');
+    },
+    
+    scrollH:function(str){
+      return $(str)[0].scrollHeight;
+    }
+     });
+    
+      // console.log(str);
+    
+      console.log($.trimRight(str))//   abcdefg;
+    
+      // $(xx).ss();
+    
+      // $.fn.scrollH = function(){
+    
+      //   console.log(1);
+    
+      // }
+    
+      // $.fn.extend({
+    
+      //   scrollH:function(){
+    
+      //     return this[0].scrollHeight;
+    
+          
+    
+      //   }
+    
+      // })
+    
+      $(document).click(function(){
+    
+        console.log($.scrollH('#t'));
+        // console.log($('#t').scrollH());
+    
+      })   
+    
+ 
 
 
  
+
+
 
  
