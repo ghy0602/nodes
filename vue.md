@@ -168,3 +168,225 @@
 			})
 		</script>
 	</body>
+### 7.reduce
+
+	let arr = [1,2,3,4];		
+			// 把数组每一项累加
+			// 上一次累加的结果作为下一个的初始值
+			// 回调函数的第一个参数，就是上一次函数执行后的返回值
+	
+			/*
+				reduce
+				参数：
+					第一个参数是函数
+					第二参数是初始值
+			*/
+	
+			let total = arr.reduce(function (item1,item2){
+				console.log(item1,item2);
+				return item1+item2	
+			},100)
+	
+			console.log(total);
+	
+			let arr2 = [{a:1,b:3},{a:2,b:4},{a:3,b:5}];
+	
+			let m = arr2.reduce(function (item1,item2){
+				console.log(item1,item2);
+				return {
+					a: item1.a + item2.a,
+					b: item1.b + item2.b
+				}	
+			},{a:1000,b:1000})
+	
+			console.log(m);
+### 8.双向数据绑定		
+
+
+			
+			// 双向数据绑定
+			// 数据 -> 模板 -> 数据// 如果遇到的是input textarea 不需要手动的			写input监听
+			// v-model指令
+			// 根据input的类型，把v-model转成不同的值
+			// input为text，转成value
+			// input为checkbox,radio, 转成checked
+	
+			// MVVM模式
+			/*
+				M model 数据
+				V view 视图
+				VM view-model 视图-模型
+			*/
+​		例子
+
+	<body>	
+		<div id="app">
+			<input v-model="messgae" type="text" />
+			<input v-model="checked" type="checkbox" />
+			<p>{{messgae}}</p>
+			<p>{{checked}}</p>
+		</div>
+		<script>
+			// 双向数据绑定
+	
+			// 数据 -> 模板 -> 数据
+	
+			// 如果遇到的是input textarea 不需要手动的写input监听
+			// v-model指令
+			// 根据input的类型，把v-model转成不同的值
+			// input为text，转成value
+			// input为checkbox,radio, 转成checked
+	
+			// MVVM模式
+			/*
+				M model 数据
+				V view 视图
+				VM view-model 视图-模型
+			*/
+	
+			let messgae = 'hello';
+			// vm
+			new Vue({
+				el: '#app',
+				data: {
+					messgae: messgae,
+					checked: false
+				}
+			})
+	
+		</script>
+	</body>
+### 9.简易版留言
+
+
+	/ 一上来把数据中message通过v-model绑定在input的value上		
+			// v-model会监控value的变化，立马更新message的值		
+			// 事件修饰符
+			// 语法： @事件名.修饰符 = '事件处理函数'
+			// https://cn.vuejs.org/v2/guide/events.html
+	<body>
+			<div id="app">
+				<input v-model="messgae" @keydown.enter="addMessage" />
+				<ul>
+					<li v-for="item,i in arr">
+						{{item}}
+						<button @click="remove(i)">删除</button>
+					</li>
+				</ul>
+			</div>
+			<script>
+	
+	
+				new Vue({
+					el: '#app',
+					data: {
+						messgae: '',
+						arr:[]
+					},
+					methods: {
+						addMessage (ev) {
+							// 只需要写逻辑，不需要处理和事件相关的
+							console.log(this.messgae);
+	
+							this.arr.push(this.messgae)
+							this.messgae = '';
+							
+						},
+						remove(i){
+							this.arr.splice(i,1)
+						}
+					}
+				})
+	
+			</script>
+		</body>
+### 10.计算属性
+
+			// 尽可能少的在模板中写业务逻辑，写的多，模板会很臃肿
+			// 计算属性 就是一个属性 用来写关于data的一些逻辑的
+			// 把处理data的逻辑放在计算属性中写
+			// computed 计算
+	<body>
+			<div id="app">
+				姓名：<input type="text" v-model="userName" />
+				年龄：<input type="text" v-model="userAge" />
+				<input type="button" @click="addUserHandle" value="添加" />
+				<ul>
+					<li v-for="item,index in users">
+						姓名:{{item.name}}
+						年龄:{{item.age}}
+					</li>
+				</ul>
+				<p>统计：以上人的总年龄为{{totalAge}}岁</p>
+				<p>上面的人总年龄为{{totalAge}}岁</p>
+			</div>
+			<script>
+				let data = [
+					{
+						name:'leo',
+						age:30
+					},
+					{
+						name:'leo',
+						age:30
+					},{
+						name:'leo',
+						age: "30"
+					}
+				]
+	
+				let vm = new Vue({
+					el:'#app',
+					data: {
+						users: data,
+						userName: '',
+						userAge: ''
+					},
+					computed: {
+						// 计算属性中的值依赖于data中的值，如果data的值发生变化，那么计算属性就会重新计算
+						// 这个计算属性的值，是函数的返回值
+						totalAge: function (){
+							// 写业务逻辑 this => 实例
+	
+							let m = this.users.reduce(function (n,item){
+								return n + parseInt(item.age)
+							},0)
+	
+	
+							return m
+						}
+					},
+					methods: {
+						addUserHandle () {
+							this.users.push({
+								name: this.userName,
+								age: this.userAge
+							})
+						}
+					}
+				})
+	
+				console.log(vm);
+	
+			</script>
+		</body>
+### 11.Object.definePropery
+
+	// 定义属性的时候，属性对应的值不能被改写		
+			// 使用Object.defineProperty()
+			/*
+				Object.defineProperty(对象,key,描述)
+				描述是一个对象：
+					https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
+					
+				存 取  描述
+					存 会触发setter对应的函数set
+					取 会触发getter对应的函数get
+					Object.defineProperty(对象,属性,{
+						get(){
+							
+						},
+						set(){
+		
+						}
+					})
