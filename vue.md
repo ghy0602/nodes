@@ -203,7 +203,7 @@
 ### 8.双向数据绑定		
 
 
-			
+​			
 			// 双向数据绑定
 			// 数据 -> 模板 -> 数据// 如果遇到的是input textarea 不需要手动的			写input监听
 			// v-model指令
@@ -275,8 +275,8 @@
 				</ul>
 			</div>
 			<script>
-	
-	
+
+
 				new Vue({
 					el: '#app',
 					data: {
@@ -351,8 +351,8 @@
 							let m = this.users.reduce(function (n,item){
 								return n + parseInt(item.age)
 							},0)
-	
-	
+
+
 							return m
 						}
 					},
@@ -390,3 +390,111 @@
 		
 						}
 					})
+### 12.vue中的组件
+
+			// 把html重复的部分封装成组件
+			/*
+				在较高层面上，组件是自定义元素，Vue.js 的编译器为它添加特殊功能
+			*/
+			/*	
+				注册组件
+					语法：
+						Vue.component(组件名字,组件的选项)
+					组件名字命名规则
+						不能使用html规定的标签名
+						烤串命名法，驼峰命名法
+					在模板中使用的时候，必须使用烤串命名
+			*/
+### 13.定制组件
+
+			定义一些 props		
+					title 弹框标题     必填项
+					okValue 确定文案
+					cancleValue 取消文案
+	
+				父组件 -> 子组件 props
+				子组件 -> 父组件 custom-event
+	
+				每一个组件都是独立的
+				在模板中使用组件，写在一对标签组件中的内容，会被当做组件定制的结构
+	
+					在组件中就要把这个内容插入到某个地方，如果组件中没有地方要插入这个内容，组件便签中的内容会被忽略。
+	
+					“插槽”
+						除非子组件模板包含至少一个 <slot> 插口，否则父组件的内容将会被丢弃。
+							当子组件模板只有一个没有属性的插槽时，父组件传入的整个内容片段将插入到插槽所在的 DOM 位置，并替换掉插槽标签本身。
+						最初在 <slot> 标签中的任何内容都被视为备用内容
+				
+				<div id="app">
+				<custom-dialog
+					title='登录'
+					ok-value="登录"
+					@ok="parentOk"
+				></custom-dialog>
+				<div v-show="isLogin">我是登录的用户名：miaov</div>
+				<custom-dialog title='登录' ok-value="登录"></custom-dialog>
+				<div v-show="isLogin123">我是登录的用户名：miaov</div>
+			</div>
+				
+				Vue.component('custom-dialog', {
+					//props: ['title','okValue', 'cancleValue']
+					props: {
+						title: {
+							type: String,
+							required: true
+						},
+						okValue: {
+							type: String,
+							default: '确定'
+						},
+						cancleValue: {
+							type: String,
+							default: '取消'
+						}
+					},
+					template: `
+						<div class="dialog">
+							<h2>{{title}}</h2>
+							<div class="content">
+								这是内容
+							</div>
+							<div class="footer">
+								<button @click="okHandle">{{okValue}}</button>
+								<button>{{cancleValue}}</button>
+							</div>
+						</div>
+					`,
+					methods: {
+						okHandle (){
+							// 子组件发布一个事件
+							//console.log(this);  // 当前所在组件的实例
+							this.$emit('ok'); // 内部发布事件
+						}
+					}
+				})
+	
+				// 根实例
+				new Vue({
+					el: '#app',
+					data:{
+						isLogin: false,
+						isLogin123: true
+					},
+					methods: {
+						parentOk () {
+							console.log('触发了这个事件处理函数');
+							this.isLogin = true
+						}
+					}
+				})
+### 14.作用域
+
+当定制内容的时候，作用域是父组件的，但是定制的内容需要渲染子组件中的数据，需要用slot标签传到定制的内容上，定制内容使用slot-scope来接受
+
+### 15.封装通用的组件
+
+		在编写组件时，最好考虑好以后是否要进行复用。一次性组件间有紧密的耦合没关系，但是可复用组件应当定义一个清晰的公开接口，同时也不要对其使用的外层数据作出任何假设。		
+				Vue 组件的 API 来自三部分——prop、事件和插槽：
+					Prop 允许外部环境传递数据给组件；
+					事件允许从组件内触发外部环境的副作用；
+					插槽允许外部环境将额外的内容组合在组件中。
