@@ -503,11 +503,11 @@
 
 
 	key值
-	
+
 	使用v-for的时候，要加上key值，来表明这个循环的元素是唯一的。
-	
+
 	生命周期：
-	
+
 	是一个组件在挂载，更新，销毁这么一个过程
 	生命周期函数：
 	在每一个阶段，会提供不同的函数，内部会自动的调用函数
@@ -552,9 +552,58 @@
 				   // 可以访问组件实例 `this`
 				 }
 			}
-			
-			
+
+
 			鉴权
+			放在beforeEach中做，配合meta字段
+	
+	页面之间传递数据
+		queryString的方式 ?
+	
+		http://localhost:8080/login?r=abc
+	
+	懒（按需）加载
+		结合 Vue 的异步组件和 Webpack 的代码分割功能，轻松实现路由组件的懒加载。
+	
+		按组分割没成功？？？？？？
+	
+	
+	上线，配置apache
+	
+		服务器的根路径是：/www
+		上线的项目mock : /www/mock/
+			mock文件件下有项目文件
+				/static
+					/css
+					/js
+				index.html
+	
+		在使用npm run build打包的时候，修改两个地方
+			1. index.html引用css和js的路径
+				修改过程：
+					/config/index.js文件中
+						build
+							assetsPublicPath: "/mock/"
+			2. 修改路由访问的根路径
+					/router
+						index.js文件中
+							配置项中写上：
+								 base:'/mock'
+	
+		在访问项目，刷新之后出现404
+			1. 打开apache的配置 httpd.conf
+				打开模块
+					LoadModule rewrite_module modules/mod_rewrite.so
+			2. 根路径/www目录下创建文件
+				.htaccess文件
+					<IfModule mod_rewrite.c>
+					  RewriteEngine On
+					  RewriteBase /
+					  RewriteRule ^index\.html$ - [L]
+					  RewriteCond %{REQUEST_FILENAME} !-f
+					  RewriteCond %{REQUEST_FILENAME} !-d
+					  RewriteRule . /mock/index.html [L]
+					</IfModule>
 
 
 
