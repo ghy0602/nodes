@@ -48,19 +48,19 @@ server.listen(9090);
     ### 3
 
     const http = require('http'); //直接下载下来的模块不用路径,如果你引入自己的模块('./httpx')
-    
+
     const fs = require('fs'); //专门用来操作本地文件
-    
+
     // http.createServer((req,res)=>{
-    
+
     //     res.write('hehe');
-    
+
     //     res.end();
-    
+
     // }).listen(8888);
-    
+
     /*
-    
+
     writeFile:写入文件
         三个参数：
             1.文件名
@@ -77,23 +77,23 @@ server.listen(9090);
 ### 4
 
     const http = require('http'); //直接下载下来的模块不用路径,如果你引入自己的模块('./httpx')
-    
+
     const fs = require('fs'); //专门用来操作本地文件
-    
+
     // const hh = require('./x.js');
-    
+
     // http.createServer((req,res)=>{
-    
+
     //     res.write('hehe');
-    
+
     //     res.end();
-    
+
     // }).listen(8888);
-    
+
     // console.log(hh);
-    
+
     /*
-    
+
     readFile:
         第一个参数：
             路径
@@ -116,11 +116,11 @@ server.listen(9090);
 ### 5
 
     const http = require('http'); //直接下载下来的模块不用路径,如果你引入自己的模块('./httpx')
-    
+
     const fs = require('fs'); //专门用来操作本地文件
-    
+
     http.createServer((req,res)=>{
-    
+
     //urlName是前端发送的信息
     let urlName = req.url;
     let na = 'www';
@@ -154,7 +154,55 @@ server.listen(9090);
      npm:   
         是全球最大开源库生态系统（下载器）
           未来要安装的库基本上都可以从npm中去获得 
-  
+
+### 8.复习
+
+	一.启动
+	
+	写好了一个服务端的js文件之后，要使用node运行，以此来启动服务
+	
+	打开cmd命令窗口，运行js文件
+	
+	node js文件 例如：node app.js
+	服务端node要遵循一个CommonJS
+	1. 一个文件就是一个模块
+	2. 每一个模块是的独立的，独立的作用域
+	3. 使用模块，要使用require()引入模块
+		a. 如果引入的是文件，必须相对或绝对路径
+			例如：require('./tools.js')
+		b. 使用安装好的第三方模块，不需要写相对路径,自动会到项目根目录下的node_modules搜索
+			例如：require('vue')
+	
+		注意：require返回值引入的那个模块中module.exports的值，默认是一个对象
+		4. 暴露模块的API
+		把要暴露的api放在module.exports上
+	
+	5. 模块的分类
+		a. 一个文件是一个模块
+		b. 一个文件夹是一个模块
+			必须在这个文件夹中放入一个描述文件package.json
+				在package.json有一个main这一项，规定了文件夹模块的入口js
+	
+		c. 内置模块，是node提供的
+				require('http') http fs path queryString
+	
+		当使用require('http') 先看下一下内置有没有这个模块，如果有直接返回了。如果没有就找运行的js文件的目录下的node_modules文件夹下的模块
+		npm 模块管理器  https://www.npmjs.com/
+	下载第三方模块，去npm上下载
+	下载：npm install（i） <模块名字>
+		安装之后，会在安装的目录下创建文件夹为node_modules
+	卸载 : npm uninstall
+	更新：npm updata
+	
+	项目的描述文件：npm init
+		会在目录下生成一个package.json 
+	
+			dependencies:{
+				依赖模块
+			}
+		一般拿到项目没有node_modules，因为这个目录会很大，先安装package.json 中依赖的模块
+			npm i
+
 
 
 
