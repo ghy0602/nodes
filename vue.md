@@ -566,10 +566,10 @@
 		结合 Vue 的异步组件和 Webpack 的代码分割功能，轻松实现路由组件的懒加载。
 	
 		按组分割没成功？？？？？？
-	
-	
+
+
 	上线，配置apache
-	
+
 		服务器的根路径是：/www
 		上线的项目mock : /www/mock/
 			mock文件件下有项目文件
@@ -605,6 +605,6 @@
 					  RewriteRule . /mock/index.html [L]
 					</IfModule>
 
-
+### 17.
 
 
