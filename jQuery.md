@@ -268,18 +268,18 @@ console.log(Sizzle('#box'));//Array(1){0:div#box,1:length:1}
 1. ### 17.函数覆盖       
 
 2.    预解析：        
-               c = function c(){
-               };
-               window.c
-           
-           逐行解读代码:
-               到了第27行，赋值10
-          alert(c);
-       window.c = 10;
-       function c(){
+              c = function c(){
+              };
+              window.c
+          
+          逐行解读代码:
+              到了第27行，赋值10
+         alert(c);
+      window.c = 10;
+      function c(){
 
-       };
-       alert(c)//10 ,不会是函数        
+      };
+      alert(c)//10 ,不会是函数        
 
 ### 18.undefined的问题
 
@@ -444,24 +444,16 @@ console.log(Sizzle('#box'));//Array(1){0:div#box,1:length:1}
 
  ### 25.滚整屏幕
 
+
     //    设置数组，颜色
-    
     let arr = ["pink","red","green","blue","yellow"];
-    
     let num = 0;
-    
     let onOff = true;
-    
     // 获取整屏的宽度与高度
-    
     let iW = $(window).innerWidth();
-    
     let iH = $(window).innerHeight();
-    
     // 给box设置颜色
-    
     arr.forEach((e,i)=>{
-    
     $('#box').append(`<div style="width:${iW}px;height:${iH}px;background:${e}"></div>`)
     });
     
@@ -541,25 +533,24 @@ console.log(Sizzle('#box'));//Array(1){0:div#box,1:length:1}
       //   scrollH:function(){
     
       //     return this[0].scrollHeight;
-    
-          
-    
+
+
+​    
       //   }
-    
+
       // })
-    
+
       $(document).click(function(){
-    
+
         console.log($.scrollH('#t'));
         // console.log($('#t').scrollH());
     
       })   
-    
- 
-
 
  
 
 
 
- 
+
+
+
