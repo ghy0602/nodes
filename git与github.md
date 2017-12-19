@@ -2,6 +2,11 @@ git与github
 
         git是一个版本控制的工具
         github:网站->程序员基友网站，可以去学习，代码托管，远程仓库，放静态资源的博客域名地址
+     SVN集成式版本控制:
+        缺点:
+        依赖网络，范围小，如果中央服务器挂了，代码就没有了
+        git分布式版本控制:
+        不依赖网络，如果加上github 范围大（只要有网络就能）
 
 
         安装工具
@@ -25,8 +30,23 @@ git与github
         cd 进入盘符
     
         cd d:
+        进入文件夹:
+                cd class
     
         ls或者ll查看目录
+        创建项目:
+                进入github,点击头像旁边的+号 
+                进入new repository创建项目
+    
+                点击download按钮
+                    复制地址 git@github.com:nizp/2017-11-22-Class.git
+                
+    
+                在指定文件夹下打开git
+                    git clone git@github.com:nizp/2017-11-22-Class.git 粘贴地址
+                
+                下载文件成功之后进入该文件夹
+                    然后开始工作区 -> 暂存区 -> 版本区
     
         可以按tab键来补全你的文件名
     
